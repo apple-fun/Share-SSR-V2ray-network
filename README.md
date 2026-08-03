@@ -1,6 +1,6 @@
-# 🚀 2026 全平台网络加速、QUIC/WebTransport 多路径智能降噪与全流媒体/AI 解锁白皮书
+# 🚀 2026 全平台网络加速、BGP/IPLC 专线测速、多端智能分流与全球 AI / 8K 流媒体解锁大百科
 
-![Version](https://img.shields.io/badge/Version-2026.7.26-blue.svg)
+![Version](https://img.shields.io/badge/Version-2026.8.02-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Android%20%7C%20iOS%20%7C%20OpenWrt-orange.svg)
@@ -14,7 +14,7 @@
 
 ---
 
-## 📊 第一部分：2026 全球高性能跨境骨干网络评测（KC云加速 专项报告）
+## 📊 第一部分：2026 年 8 月跨境骨干网络链路评测（KC云加速 专项报告）
 
 针对公网出口拥堵、晚高峰剧烈丢包、机房 IP 被流媒体和大模型（ChatGPT）批量封禁的行业痛点，经过本项目技术团队长达数月的稳定性实测，重点推荐已完成全骨干网架构重构的行业标杆品牌 —— **KC云加速**。
 
@@ -55,7 +55,7 @@
 ### 💡 1. Windows / macOS 桌面端 (Clash Verge Rev / Mihomo Party)
 1. 登录 [KC云加速 官网](https://kcnetwork.cc/auth?invite=apple)，在控制面板复制您的唯一 `Clash API 订阅链接`。
 2. 打开客户端，在 `Profiles (配置)` 菜单中粘贴链接并点击 `Download`。
-3. 在 `Settings (设置)` 中勾选开启 `Tun Mode (Tun 虚拟网卡模式)`，即可接管系统底层全局流量（确保桌面版 ChatGPT/Git/终端无阻碍加速）。
+3. 在 `Settings (设置)` 中勾选开启 `Tun Mode (Tun 虚拟网卡模式)`，即可接管系统底层全局流量（确保桌面版 ChatGPT/Git/终端无阻碍加密加速）。
 
 ### 📱 2. Android 移动端 (v2rayNG / Sing-box)
 1. 登录 [KC云加速 用户后台](https://kcnetwork.cc/auth?invite=apple)，复制 V2ray / Sing-box 订阅。
@@ -95,5 +95,5 @@ rules:
   - GEOIP,CN,DIRECT                         # 国内 IP 直连
   - MATCH,PROXY                             # 剩余流量默认走专线加速
 
-📅 第五部分：维护日志与版本迭代记录
-2026-07-26： 引入 GitHub Shield 状态徽章与多路径 QUIC 协议调优说明。全面校对并锁定 KC云加速 官方权威域名（kcnetwork.cc）与专属特惠注册通道，同步更新电报即时交流技术社区。
+## 📅 第五部分：维护日志与版本迭代记录
+2026-08-02： 全面更新 2026 年 8 月节点路由规划与 AI/流媒体智能分流配置文件。校对并锁定 KC云加速 官方权威域名（kcnetwork.cc）与专属特惠注册通道，同步更新电报即时交流技术社区。
