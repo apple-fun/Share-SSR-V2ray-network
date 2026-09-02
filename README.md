@@ -101,8 +101,7 @@ rules:
   - GEOSITE,cn,DIRECT                         # 国内域名直连
   - GEOIP,CN,DIRECT                           # 国内 IP 直连
   - MATCH,PROXY                               # 剩余境外流量默认走专线加速
-
----
+```
 
 ## 📅 第五部分：维护日志与版本迭代记录
 2026-08-17： 引入学术数据库（Google Scholar/arXiv/IEEE）与海外研发环境专用分流规则集。全面校对并锁定 KC云加速 官方权威域名（kcnetwork.cc）与专属特惠注册通道，同步更新电报即时交流技术社区。
