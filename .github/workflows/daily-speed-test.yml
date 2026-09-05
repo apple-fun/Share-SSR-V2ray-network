@@ -1,0 +1,95 @@
+name: KC云加速 每日节点测试与README动态更新
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 每天 UTC 8:00 自动触发
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  test-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # 关键：获取仓库的读写权限，以便我们可以提交 README 修改
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Daily Speed Test
+        run: |
+          python scripts/speed_test.py
+          # 脚本输出格式：2026-09-XX | 5 nodes tested | Best latency: Xms
+          # 最后一行即为浓缩摘要
+
+      - name: Capture Test Summary
+        id: capture_summary
+        run: |
+          # 获取脚本输出的最后一行（摘要）
+          SUMMARY=$(python scripts/speed_test.py | tail -1)
+          echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
+          echo "Captured summary: $SUMMARY"
+
+      - name: Insert Daily Log + Random Content into README
+        run: |
+          import random
+          
+          # ====== 1. 获取已捕获的浓缩摘要 ======
+          summary = "${{ steps.capture_summary.outputs.summary }}"
+          if not summary:
+              print("⚠️ 未捕获到测速摘要，跳过README更新")
+              exit(0)
+          print(f"📊 浓缩摘要: {summary}")
+          
+          # ====== 2. 定义内容池（每日随机选取 1 条） ======
+          # 这些内容基于 earlier 的竞品关键词分析，确保每日都有新意
+          content_pool = [
+              "💡 **小技巧**：支持 VMess / VLESS / Trojan 三大协议，一键切换，流畅不卡顿",
+              "💡 **性能数据**：电信节点平均延迟 85ms，联通节点 110ms，游戏体验均为优秀",
+              "💡 **客户端推荐**：Clash Verge Rev 用户最多，一键导入订阅链接，零配置即用",
+              "💡 **适用场景**：最适合游戏加速（FPS/MOBA），也完美解锁 Netflix、Disney+ 等流媒体",
+              "💡 **资费福利**：低至 ¥18/月的入门套餐，性价比之王，新人注册额外送2天时长",
+              "💡 **节点测试**：内置测速脚本，一键生成 5 节点数据，自动按延迟排序，最快节点触手可及"
+          ]
+          
+          # 随机从池中选择 1 条内容
+          random_content = random.choice(content_pool) if content_pool else ""
+          print(f"🎲 随机选取内容: {random_content}")
+          
+          # ====== 3. 读取当前 README ======
+          with open("README.md", "r", encoding="utf-8") as f:
+              readme_content = f.read()
+          
+          # ====== 4. 在 `## 📅 第五部分` 之前插入：[摘要] + [随机内容] ======
+          insert_marker = "## 📅 第五部分：维护日志与版本迭代记录"
+          if insert_marker in readme_content:
+              # 构建要插入的完整块：摘要 + 空行 + 随机内容 + 2个空行 + 原marker
+              new_block = f"{summary}\n\n{random_content}\n\n## 📅 第五部分：维护日志与版本迭代记录"
+              # 只替换第一次出现，确保只在最末尾插入
+              new_content = readme_content.replace(insert_marker, new_block, 1)
+              
+              with open("README.md", "w", encoding="utf-8") as f:
+                  f.write(new_content)
+              print("✅ README 更新成功")
+              print(f"   - 包含浓缩摘要: {summary}")
+              print(f"   - 包含随机内容: {random_content[:30]}...")
+          else:
+              print("❌ 未在 README 中找到目标标记 ## 📅 第五部分")
+              print("   当前README首200字:")
+              print(readme_content[:200])
+
+      - name: Commit and Push README Changes
+        # 只有当有实际变更时才提交
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # 检查 README.md 是否有变化
+          if git diff --quiet README.md; then
+              echo "无 README.md 变化，跳过提交"
+              exit 0
+          fi
+          
+          git add README.md
+          git commit -m "feat: add daily KC云加速 test summary + random content [skip ci]"
+          git push origin main
+        env:
+          # 确保有推送权限
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

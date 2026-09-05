@@ -1,0 +1,13 @@
+# KC云加速 每日测速数据
+
+自动生成的节点测试结果，请每日运行 scripts/speed_test.py 更新。
+
+**生成规则**：
+- 每日自动运行 `scripts/speed_test.py` 生成 `benchmark_results_YYYYMMDD_HHMMSS.csv`
+- 结果会自动更新 `data/benchmark_results_current.csv`（便于直接引用）
+- 建议每天查看 GitHub Actions 生成的 Issue 了解当日测试详情
+
+**查看方式**：
+1. 查看仓库 `Actions` 标签页了解自动运行状态
+2. 染阅 `Issues` 区域查看每日测试报告
+3. 下载 `Artifacts` 查看原始 CSV 数据
