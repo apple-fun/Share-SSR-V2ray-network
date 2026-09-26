@@ -104,6 +104,29 @@ def cleanup(text):
     return re.sub(r'\n{3,}', '\n\n', text)
 
 
+def trim_blocks(text, keep=7):
+    """只保留最近 keep 个「今日更新」块，避免 README 无限膨胀（历史仍留在维护日志里）。"""
+    lines = text.split("\n")
+    starts = [i for i, l in enumerate(lines)
+              if re.match(r'^### 📌 \d{4}-\d{2}-\d{2} 今日更新$', l.strip())]
+    if len(starts) <= keep:
+        return text
+
+    ranges = []
+    for s in starts:
+        e = s + 1
+        while e < len(lines) and (lines[e].strip() == "" or lines[e].lstrip().startswith("- ")):
+            e += 1
+        while e < len(lines) and lines[e].strip() == "":
+            e += 1
+        ranges.append((s, e))
+
+    remove = set()
+    for s, e in ranges[:-keep]:
+        remove.update(range(s, e))
+    return "\n".join(l for i, l in enumerate(lines) if i not in remove)
+
+
 def main():
     from datetime import datetime
     today = datetime.now().strftime("%Y-%m-%d")
@@ -140,6 +163,7 @@ def main():
     new_tail = "\n".join([lines[0], log_entry] + lines[1:])
 
     new_text = (head + "\n".join(block) + new_tail).replace("\n", nl)
+    new_text = trim_blocks(new_text)
 
     with open(README_PATH, "w", encoding="utf-8", newline="") as f:
         f.write(new_text)
