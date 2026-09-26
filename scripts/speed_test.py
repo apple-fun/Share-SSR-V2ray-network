@@ -64,5 +64,7 @@ def main():
 
     print(f"Summary data updated: {summary_filename}")
 
+    return best
+
 if __name__ == "__main__":
     main()
