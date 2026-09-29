@@ -128,8 +128,10 @@ def trim_blocks(text, keep=7):
 
 
 def main():
-    from datetime import datetime
-    today = datetime.now().strftime("%Y-%m-%d")
+    from datetime import datetime, timedelta, timezone
+    # 固定按北京时间取日期：GitHub Actions 运行器是 UTC，
+    # 定时任务常被推迟数小时，按 UTC 取日期会在跨过 UTC 午夜后写错日期
+    today = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
 
     random.seed(today)                # 固定当日随机种子 -> 同一天数据稳定、可幂等
     best = speed_test.main()          # 生成数据 + 打印摘要
